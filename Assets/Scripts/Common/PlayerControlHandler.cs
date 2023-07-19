@@ -15,8 +15,7 @@ namespace Galaxian.Common
         private bool _isSpaceshipAttached;
         private BaseSpaceship _playerSpaceship;
         private Transform _cachedPlayerSpaceshipTransform;
-        
-        
+
         private void Awake()
         {
             if (TryGetComponent<BaseSpaceship>(out _playerSpaceship))
@@ -35,6 +34,9 @@ namespace Galaxian.Common
         {
             if(!_isSpaceshipAttached)
                 return;
+
+            if((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && _playerSpaceship.IsCanShoot)
+                _playerSpaceship.Shoot(_cachedPlayerSpaceshipTransform.forward);
             
             MovementHandle();
         }
@@ -47,7 +49,7 @@ namespace Galaxian.Common
             _cachedPlayerSpaceshipTransform.Rotate(new Vector2(rotateAroundX, rotateAroundY));
 
             _playerSpaceship.SpaceshipCharacterController.Move(
-                Time.deltaTime * _playerSpaceship.Speed * _cachedPlayerSpaceshipTransform.forward);
+                Time.deltaTime * _playerSpaceship.SpaceshipData.Speed * _cachedPlayerSpaceshipTransform.forward);
         }
         
     }
